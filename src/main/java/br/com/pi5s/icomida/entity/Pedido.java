@@ -7,6 +7,7 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -55,7 +56,7 @@ public class Pedido implements Serializable {
     private BigDecimal pedidoValorTotal;
     @Column(name = "stts_id")
     private Integer sttsId;
-    @OneToMany(mappedBy = "pedidoId")
+    @OneToMany(mappedBy = "pedidoId", fetch = FetchType.LAZY)
     private Collection<Pedidoitem> pedidoitemCollection;
     @JoinColumn(name = "empresa_id", referencedColumnName = "empresa_id")
     @ManyToOne
@@ -68,6 +69,28 @@ public class Pedido implements Serializable {
     private Mesa mesaId;
 
     public Pedido() {
+    }
+
+    public Pedido(
+            Integer pedidoId,
+            Date pedidoData,
+            BigDecimal pedidoSubtotal,
+            BigDecimal pedidoTaxaGarcom,
+            BigDecimal pedidoValorTotal,
+            Mesa mesaId,
+            Funcionario funcionarioId,
+            Empresa empresaId,
+            Integer sttsId) {
+
+        this.pedidoId = pedidoId;
+        this.pedidoData = pedidoData;
+        this.pedidoSubtotal = pedidoSubtotal;
+        this.pedidoTaxaGarcom = pedidoTaxaGarcom;
+        this.pedidoValorTotal = pedidoValorTotal;
+        this.mesaId = mesaId;
+        this.funcionarioId = funcionarioId;
+        this.empresaId = empresaId;
+        this.sttsId = sttsId;
     }
 
     public Pedido(Integer pedidoId) {
@@ -179,5 +202,4 @@ public class Pedido implements Serializable {
     public String toString() {
         return "br.com.pi5s.icomida.entity.Pedido[ pedidoId=" + pedidoId + " ]";
     }
-
 }

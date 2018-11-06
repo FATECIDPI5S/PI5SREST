@@ -21,9 +21,21 @@ public class PedidoDAO {
             List<Pedido> listaPedidos = new ArrayList<>();
 
             em.getTransaction().begin();
-            listaPedidos = em.createQuery("SELECT p FROM Pedido p").getResultList();
-            em.getTransaction().commit();
 
+            listaPedidos = em.createQuery(""
+                    + "SELECT NEW br.com.pi5s.icomida.entity.Pedido("
+                    + "p.pedidoId, "
+                    + "p.pedidoData, "
+                    + "p.pedidoSubtotal, "
+                    + "p.pedidoTaxaGarcom, "
+                    + "p.pedidoValorTotal, "
+                    + "p.mesaId, p.funcionarioId, "
+                    + "p.empresaId, "
+                    + "p.sttsId) "
+                    + "FROM Pedido p")
+                    .getResultList();
+
+            em.getTransaction().commit();
             return listaPedidos;
 
         } catch (Exception e) {
