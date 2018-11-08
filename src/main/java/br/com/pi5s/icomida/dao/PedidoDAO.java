@@ -22,16 +22,21 @@ public class PedidoDAO {
 
             em.getTransaction().begin();
 
+//            listaPedidos = em.createQuery(""
+//                    + "SELECT NEW br.com.pi5s.icomida.entity.Pedido("
+//                    + "p.pedidoId, "
+//                    + "p.pedidoData, "
+//                    + "p.pedidoSubtotal, "
+//                    + "p.pedidoTaxaGarcom, "
+//                    + "p.pedidoValorTotal, "
+//                    + "p.mesaId, p.funcionarioId, "
+//                    + "p.empresaId, "
+//                    + "p.sttsId) "
+//                    + "FROM Pedido p")
+//                    .getResultList();
+//
             listaPedidos = em.createQuery(""
-                    + "SELECT NEW br.com.pi5s.icomida.entity.Pedido("
-                    + "p.pedidoId, "
-                    + "p.pedidoData, "
-                    + "p.pedidoSubtotal, "
-                    + "p.pedidoTaxaGarcom, "
-                    + "p.pedidoValorTotal, "
-                    + "p.mesaId, p.funcionarioId, "
-                    + "p.empresaId, "
-                    + "p.sttsId) "
+                    + "SELECT p "
                     + "FROM Pedido p")
                     .getResultList();
 
@@ -42,6 +47,9 @@ public class PedidoDAO {
             System.out.println("Erro ao listar pedidos (REST).\nMensagem de erro:\n" + e.getMessage());
             em.getTransaction().rollback();
             return null;
+
+        } finally {
+            em.close();
         }
     }
 }
