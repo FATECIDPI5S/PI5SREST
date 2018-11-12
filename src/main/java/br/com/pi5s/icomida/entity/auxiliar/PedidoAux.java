@@ -12,46 +12,58 @@ public class PedidoAux {
 
     public static List<PedidoAux> formatarLista(List<Pedido> listaPedido) {
         List<PedidoAux> novaLista = new ArrayList<>();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         try {
             for (Pedido pedidoAntigo : listaPedido) {
-                PedidoAux novoPedido = new PedidoAux();
-                if (pedidoAntigo.getPedidoId() != null) {
-                    novoPedido.setPedidoId(pedidoAntigo.getPedidoId());
-                }
-                if (pedidoAntigo.getPedidoData() != null) {
-                    novoPedido.setPedidoData(sdf.format(pedidoAntigo.getPedidoData()));
-                }
-                if (pedidoAntigo.getPedidoSubtotal() != null) {
-                    novoPedido.setPedidoSubtotal(Double.valueOf(String.valueOf(pedidoAntigo.getPedidoSubtotal())));
-                }
-                if (pedidoAntigo.getPedidoTaxaGarcom() != null) {
-                    novoPedido.setPedidoTaxaGarcom(Double.valueOf(String.valueOf(pedidoAntigo.getPedidoTaxaGarcom())));
-                }
-                if (pedidoAntigo.getPedidoValorTotal() != null) {
-                    novoPedido.setPedidoValorTotal(Double.valueOf(String.valueOf(pedidoAntigo.getPedidoValorTotal())));
-                }
-                if (pedidoAntigo.getSttsId() != null) {
-                    novoPedido.setSttsId(pedidoAntigo.getSttsId());
-                }
-                // if (pedidoAntigo.getPedidoitemCollection() != null) {
-                // novoPedido.setPedidoitemCollection(pedidoAntigo.getPedidoitemCollection().);
-                // }
-                if (pedidoAntigo.getEmpresaId() != null) {
-                    novoPedido.setEmpresaId(pedidoAntigo.getEmpresaId().getEmpresaId());
-                }
-                if (pedidoAntigo.getFuncionarioId() != null) {
-                    novoPedido.setFuncionarioId(pedidoAntigo.getFuncionarioId().getFuncionarioId());
-                }
-                if (pedidoAntigo.getMesaId() != null) {
-                    novoPedido.setMesaId(pedidoAntigo.getMesaId().getMesaId());
-                }
+                PedidoAux novoPedido = PedidoAux.formatarPedido(pedidoAntigo);
                 novaLista.add(novoPedido);
             }
             return novaLista;
 
         } catch (Exception e) {
             System.out.println("Erro em br.com.pi5s.icomida.entity.auxiliar.PedidoAux.formatarLista()");
+            System.out.println("Mensagem de erro:\n" + e.getMessage());
+            return null;
+        }
+    }
+
+    public static PedidoAux formatarPedido(Pedido pedidoAntigo) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        try {
+            PedidoAux novoPedido = new PedidoAux();
+            if (pedidoAntigo.getPedidoId() != null) {
+                novoPedido.setPedidoId(pedidoAntigo.getPedidoId());
+            }
+            if (pedidoAntigo.getPedidoData() != null) {
+                novoPedido.setPedidoData(sdf.format(pedidoAntigo.getPedidoData()));
+            }
+            if (pedidoAntigo.getPedidoSubtotal() != null) {
+                novoPedido.setPedidoSubtotal(Double.valueOf(String.valueOf(pedidoAntigo.getPedidoSubtotal())));
+            }
+            if (pedidoAntigo.getPedidoTaxaGarcom() != null) {
+                novoPedido.setPedidoTaxaGarcom(Double.valueOf(String.valueOf(pedidoAntigo.getPedidoTaxaGarcom())));
+            }
+            if (pedidoAntigo.getPedidoValorTotal() != null) {
+                novoPedido.setPedidoValorTotal(Double.valueOf(String.valueOf(pedidoAntigo.getPedidoValorTotal())));
+            }
+            if (pedidoAntigo.getSttsId() != null) {
+                novoPedido.setSttsId(pedidoAntigo.getSttsId());
+            }
+            // if (pedidoAntigo.getPedidoitemCollection() != null) {
+            // novoPedido.setPedidoitemCollection(pedidoAntigo.getPedidoitemCollection().);
+            // }
+            if (pedidoAntigo.getEmpresaId() != null) {
+                novoPedido.setEmpresaId(pedidoAntigo.getEmpresaId().getEmpresaId());
+            }
+            if (pedidoAntigo.getFuncionarioId() != null) {
+                novoPedido.setFuncionarioId(pedidoAntigo.getFuncionarioId().getFuncionarioId());
+            }
+            if (pedidoAntigo.getMesaId() != null) {
+                novoPedido.setMesaId(pedidoAntigo.getMesaId().getMesaId());
+            }
+            return novoPedido;
+
+        } catch (Exception e) {
+            System.out.println("Erro em br.com.pi5s.icomida.entity.auxiliar.PedidoAux.formatarPedido()");
             System.out.println("Mensagem de erro:\n" + e.getMessage());
             return null;
         }
