@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.pi5s.icomida.entity;
 
 import java.io.Serializable;
@@ -11,6 +6,8 @@ import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -18,13 +15,11 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
  * @author Guilherme Abacherli
  */
 @Entity
@@ -42,7 +37,7 @@ public class Pedidoitem implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @NotNull
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "pedidoitem_id")
     private Integer pedidoitemId;
     @Column(name = "pedidoitem_quantidade")
@@ -61,6 +56,9 @@ public class Pedidoitem implements Serializable {
     @JoinColumn(name = "produto_id", referencedColumnName = "produto_id")
     @ManyToOne
     private Produto produtoId;
+    @JoinColumn(name = "stts_id", referencedColumnName = "stts_id")
+    @ManyToOne
+    private Stts sttsId;
     @OneToMany(mappedBy = "pedidoitemId")
     private Collection<Pedidoitemadicional> pedidoitemadicionalCollection;
 
@@ -127,6 +125,14 @@ public class Pedidoitem implements Serializable {
         this.produtoId = produtoId;
     }
 
+    public Stts getSttsId() {
+        return sttsId;
+    }
+
+    public void setSttsId(Stts sttsId) {
+        this.sttsId = sttsId;
+    }
+
     @XmlTransient
     public Collection<Pedidoitemadicional> getPedidoitemadicionalCollection() {
         return pedidoitemadicionalCollection;
@@ -160,5 +166,4 @@ public class Pedidoitem implements Serializable {
     public String toString() {
         return "br.com.pi5s.icomida.entity.Pedidoitem[ pedidoitemId=" + pedidoitemId + " ]";
     }
-    
 }

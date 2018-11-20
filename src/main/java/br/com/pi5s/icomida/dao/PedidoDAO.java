@@ -1,6 +1,5 @@
 package br.com.pi5s.icomida.dao;
 
-//import br.com.pi5s.icomida.entity.Pedido;
 import br.com.pi5s.icomida.view.PedidoPendenteCozinha;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +40,44 @@ public class PedidoDAO {
             System.out.println("Erro ao listar pedidos (REST).\nMensagem de erro:\n" + e.getMessage());
             em.getTransaction().rollback();
             return null;
+
+        } finally {
+            em.close();
+        }
+    }
+
+    /**
+     * Altera o status de um pedidoitem.
+     *
+     * @param pedidoitemId Chave primária (código) do pedidoitem.
+     * @param sttsId Novo status do pedidoitem.
+     * @return Mensagem (String) com resposta em caso de sucesso ou falha.
+     */
+    public String alterarSttsPedidoitem(Integer pedidoitemId, Integer sttsId) {
+
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("iComidaRESTPU");
+        EntityManager em = emf.createEntityManager();
+
+        try {
+
+            em.getTransaction().begin();
+
+            em.createQuery(""
+                    + "UPDATE p.sttsId "
+                    + "SET p.sttsId = :sttsId "
+                    + "WHERE p.pedidoitemId = :pedidoitemId")
+                    .setParameter("sttsId", sttsId)
+                    .setParameter("pedidoitemId", pedidoitemId)
+                    .executeUpdate();
+
+            em.getTransaction().commit();
+
+            return "Pedido: " + pedidoitemId + " - Status: " + sttsId;
+
+        } catch (Exception e) {
+            System.out.println("Erro ao atualizar status do pedido (alterarSttsPedidoitem) (REST).\nMensagem de erro:\n" + e.getMessage());
+            em.getTransaction().rollback();
+            return "Erro ao alterar status do pedidoitem!";
 
         } finally {
             em.close();

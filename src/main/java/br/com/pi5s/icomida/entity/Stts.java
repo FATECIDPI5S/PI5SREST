@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package br.com.pi5s.icomida.entity;
 
 import java.io.Serializable;
@@ -10,18 +5,18 @@ import java.util.Collection;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
  * @author Guilherme Abacherli
  */
 @Entity
@@ -36,12 +31,14 @@ public class Stts implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
-    @NotNull
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "stts_id")
     private Integer sttsId;
     @Size(max = 50)
     @Column(name = "stts_descricao")
     private String sttsDescricao;
+    @OneToMany(mappedBy = "sttsId")
+    private Collection<Pedidoitem> pedidoitemCollection;
     @OneToMany(mappedBy = "sttsId")
     private Collection<Produto> produtoCollection;
     @OneToMany(mappedBy = "sttsId")
@@ -70,6 +67,15 @@ public class Stts implements Serializable {
 
     public void setSttsDescricao(String sttsDescricao) {
         this.sttsDescricao = sttsDescricao;
+    }
+
+    @XmlTransient
+    public Collection<Pedidoitem> getPedidoitemCollection() {
+        return pedidoitemCollection;
+    }
+
+    public void setPedidoitemCollection(Collection<Pedidoitem> pedidoitemCollection) {
+        this.pedidoitemCollection = pedidoitemCollection;
     }
 
     @XmlTransient
@@ -123,5 +129,4 @@ public class Stts implements Serializable {
     public String toString() {
         return "br.com.pi5s.icomida.entity.Stts[ sttsId=" + sttsId + " ]";
     }
-    
 }

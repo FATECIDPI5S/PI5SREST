@@ -14,6 +14,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import com.google.gson.Gson;
+import javax.ws.rs.PathParam;
 
 /**
  * REST Web Service
@@ -52,6 +53,11 @@ public class IcomidaResource {
     public void putXml(String content) {
     }
 
+    /**
+     * Retorna JSON com pedidos da base de dados.
+     *
+     * @return Objeto JSON.
+     */
     @GET
     @Path(value = "/listarPedidos")
     @Produces(MediaType.APPLICATION_JSON)
@@ -78,37 +84,37 @@ public class IcomidaResource {
     @Path(value = "/pedidos")
     @Produces(MediaType.TEXT_HTML)
     public String paginaPedidos() {
+
         try {
 
             PedidoDAO pedidoDao = new PedidoDAO();
-
             List<PedidoPendenteCozinha> listaPedidosPendentes = new ArrayList<>();
             listaPedidosPendentes.addAll(pedidoDao.listarPedidos());
 
             String pedido_item_html = ""
-                    + "<!DOCTYPE html>\n"
-                    + "<html>\n"
-                    + "    <head>\n"
-                    + "        <title>iComidaREST</title>\n"
-                    + "        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n"
-                    + "    </head>"
-                    + "<link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css\" integrity=\"sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO\" crossorigin=\"anonymous\">"
-                    + "<script src=\"https://code.jquery.com/jquery-3.3.1.slim.min.js\" integrity=\"sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo\" crossorigin=\"anonymous\"></script>\n"
-                    + "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js\" integrity=\"sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49\" crossorigin=\"anonymous\"></script>\n"
-                    + "<script src=\"https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js\" integrity=\"sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy\" crossorigin=\"anonymous\"></script>"
+                    //+ "<!DOCTYPE html>\n"
+                    //+ "<html>\n"
+                    //+ "    <head>\n"
+                    //+ "        <title>iComidaREST</title>\n"
+                    //+ "        <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">\n"
+                    //+ "    </head>"
+                    //+ "<link rel=\"stylesheet\" href=\"https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css\" integrity=\"sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO\" crossorigin=\"anonymous\">"
+                    //+ "<script src=\"https://code.jquery.com/jquery-3.3.1.slim.min.js\" integrity=\"sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo\" crossorigin=\"anonymous\"></script>\n"
+                    //+ "<script src=\"https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js\" integrity=\"sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49\" crossorigin=\"anonymous\"></script>\n"
+                    //+ "<script src=\"https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js\" integrity=\"sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy\" crossorigin=\"anonymous\"></script>"
                     + "<table class='table'>"
                     + "     <tr>"
                     + "         <th>"
-                    + "              Pedido ID"
+                    + "              Pedido"
                     + "         </th>"
                     + "         <th>"
-                    + "               Produto Qtd"
+                    + "               Produto Quantidade"
                     + "         </th>"
                     + "         <th>"
                     + "               Nome"
                     + "         </th>"
                     + "         <th>"
-                    + "               Obs"
+                    + "               Observações"
                     + "         </th>"
                     + "         <th>"
                     + "               Ação"
@@ -118,11 +124,11 @@ public class IcomidaResource {
             for (PedidoPendenteCozinha p : listaPedidosPendentes) {
                 pedido_item_html += ""
                         + "<tr>"
-                        + "<td>" + p.getPedido() + "</td>"
-                        + "<td>" + p.getQtd() + "</td>"
-                        + "<td>" + p.getProduto() + "</td>"
-                        + "<td>" + p.getObs() + "</td>"
-                        + "<td><a href='#'>Teste</a></td>"
+                        + "     <td>" + p.getPedido() + "</td>"
+                        + "     <td>" + p.getQtd() + "</td>"
+                        + "     <td>" + p.getProduto() + "</td>"
+                        + "     <td>" + p.getObs() + "</td>"
+                        + "     <td><a href='#'>Teste</a></td>"
                         + "</tr>";
             }
 
@@ -135,11 +141,20 @@ public class IcomidaResource {
     }
 
     @PUT
-    @Path(value = "/pedidoConcluido/{id}")
+    @Path(value = "/alterarPedidoitem/{pedidoId}/{sttsId}")
     @Produces(MediaType.TEXT_HTML)
-    public String paginaPedidoConcluido() {
+    public String paginaPedidoConcluido(
+            @PathParam("pedidoId") Integer pedidoId,
+            @PathParam("sttsId") Integer sttsId) {
+
         try {
-            return "";
+
+            PedidoDAO pedidoDao = new PedidoDAO();
+            String resposta = pedidoDao.alterarSttsPedidoitem(pedidoId, sttsId);
+
+            resposta = "<h1>" + resposta + "</h1>";
+            return resposta;
+
         } catch (Exception e) {
             return e.getMessage();
         }

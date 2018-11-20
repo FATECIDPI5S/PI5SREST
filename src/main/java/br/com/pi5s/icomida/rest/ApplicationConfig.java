@@ -22,6 +22,7 @@ public class ApplicationConfig extends Application {
      * out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
+        resources.add(br.com.pi5s.icomida.rest.CORSFilter.class);
         resources.add(br.com.pi5s.icomida.rest.IcomidaResource.class);
     }
 }
