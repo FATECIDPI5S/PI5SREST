@@ -1,5 +1,6 @@
 package br.com.pi5s.icomida.dao;
 
+import br.com.pi5s.icomida.entity.Stts;
 import br.com.pi5s.icomida.view.PedidoPendenteCozinha;
 import java.util.ArrayList;
 import java.util.List;
@@ -60,13 +61,15 @@ public class PedidoDAO {
 
         try {
 
+            Stts status = new Stts(sttsId);
+            
             em.getTransaction().begin();
 
             em.createQuery(""
-                    + "UPDATE p.sttsId "
+                    + "UPDATE Pedidoitem p "
                     + "SET p.sttsId = :sttsId "
                     + "WHERE p.pedidoitemId = :pedidoitemId")
-                    .setParameter("sttsId", sttsId)
+                    .setParameter("sttsId", status)
                     .setParameter("pedidoitemId", pedidoitemId)
                     .executeUpdate();
 
